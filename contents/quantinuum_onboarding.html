@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quantinuum — Advanced Systems Engineer Onboarding</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --border: #e2e0d8;
+    --text-primary: #1a1917;
+    --text-secondary: #5c5a55;
+    --text-muted: #9b9892;
+    --accent: #1a4b8c;
+    --accent-bg: #eef3fb;
+    --accent-border: #b5cef5;
+    --teal: #0f6e56;
+    --teal-bg: #e5f5ef;
+    --amber: #854f0b;
+    --amber-bg: #fdf3e0;
+    --red: #a32d2d;
+    --red-bg: #fdf0f0;
+    --purple: #3c3489;
+    --purple-bg: #eeedfe;
+    --mono: 'Courier New', monospace;
+    --sans: system-ui, -apple-system, sans-serif;
+    --radius: 8px;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.65;
+    padding: 0 0 4rem;
+  }
+
+  .header {
+    background: var(--accent);
+    color: #fff;
+    padding: 3rem 2rem 2.5rem;
+  }
+  .header-inner { max-width: 780px; margin: 0 auto; }
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .7;
+    margin-bottom: .6rem;
+  }
+  .header h1 { font-size: 28px; font-weight: 500; line-height: 1.25; margin-bottom: .75rem; }
+  .header-meta {
+    font-size: 13px;
+    opacity: .75;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1.25rem;
+  }
+  .header-meta span { display: flex; align-items: center; gap: .35rem; }
+
+  .main { max-width: 780px; margin: 0 auto; padding: 0 2rem; }
+
+  .intro-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .intro-box strong { color: var(--text-primary); font-weight: 500; }
+
+  .prereq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .prereq-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+  .prereq-card h4 {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: .6rem;
+  }
+  .prereq-card ul { padding-left: 1.1rem; font-size: 13.5px; color: var(--text-secondary); }
+  .prereq-card li { margin-bottom: .3rem; }
+  .prereq-card.have { border-left: 3px solid #1d9e75; }
+  .prereq-card.need { border-left: 3px solid #d85a30; }
+
+  .week-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin: 2.5rem 0 1rem;
+    padding-bottom: .75rem;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .week-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .week-title { font-size: 20px; font-weight: 500; }
+
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: .75rem;
+    overflow: hidden;
+  }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .9rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .day-header:hover { background: #fafaf8; }
+  .day-num {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    min-width: 50px;
+  }
+  .day-title { font-size: 15px; font-weight: 500; flex: 1; }
+  .day-tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .tag-review { background: var(--amber-bg); color: var(--amber); }
+  .tag-quantum { background: var(--teal-bg); color: var(--teal); }
+  .tag-tools { background: var(--accent-bg); color: var(--accent); }
+  .tag-testing { background: var(--purple-bg); color: var(--purple); }
+  .tag-papers { background: var(--red-bg); color: var(--red); }
+
+  .day-chevron {
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: transform .2s;
+  }
+  .day-body {
+    border-top: 1px solid var(--border);
+    padding: 1.25rem;
+    display: none;
+  }
+  .day-card.open .day-body { display: block; }
+  .day-card.open .day-chevron { transform: rotate(90deg); }
+
+  .day-section { margin-bottom: 1.25rem; }
+  .day-section:last-child { margin-bottom: 0; }
+  .day-section-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text-muted);
+    margin-bottom: .5rem;
+  }
+  .day-section p { font-size: 14px; color: var(--text-secondary); margin-bottom: .5rem; }
+  .day-section ul, .day-section ol {
+    padding-left: 1.25rem;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .day-section li { margin-bottom: .4rem; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: #f1f0ec;
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--text-primary);
+  }
+
+  .resource-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .resource-link:hover { text-decoration: underline; }
+
+  .callout {
+    border-radius: var(--radius);
+    padding: .9rem 1rem;
+    font-size: 13.5px;
+    margin-top: .75rem;
+    line-height: 1.6;
+  }
+  .callout-tip { background: var(--teal-bg); color: var(--teal); border-left: 3px solid #1d9e75; }
+  .callout-warn { background: var(--amber-bg); color: var(--amber); border-left: 3px solid #ef9f27; }
+  .callout-key { background: var(--accent-bg); color: var(--accent); border-left: 3px solid #378add; }
+
+  .papers-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin: 2.5rem 0;
+  }
+  .papers-section h3 {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    padding-bottom: .6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .paper-item {
+    display: flex;
+    gap: 1rem;
+    padding: .8rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .paper-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .paper-num {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .paper-content { flex: 1; }
+  .paper-title { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: .2rem; }
+  .paper-meta { font-size: 12.5px; color: var(--text-muted); margin-bottom: .3rem; }
+  .paper-why { font-size: 13px; color: var(--text-secondary); }
+  .paper-badge {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-left: .5rem;
+  }
+  .badge-core { background: var(--accent-bg); color: var(--accent); }
+  .badge-context { background: var(--amber-bg); color: var(--amber); }
+  .badge-methods { background: var(--purple-bg); color: var(--purple); }
+
+  .stack-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 13px;
+  }
+  .stack-layer {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .6rem .8rem;
+    border-radius: 6px;
+    margin-bottom: .4rem;
+  }
+  .stack-layer:last-child { margin-bottom: 0; }
+  .stack-label { font-weight: 500; min-width: 80px; }
+  .stack-desc { color: var(--text-secondary); font-size: 12.5px; }
+  .stack-arrow {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 16px;
+    margin: .1rem 0;
+    line-height: 1;
+  }
+
+  .progress-bar {
+    background: var(--border);
+    border-radius: 4px;
+    height: 4px;
+    margin: 2rem 0 1rem;
+    overflow: hidden;
+  }
+
+  footer {
+    max-width: 780px;
+    margin: 2rem auto 0;
+    padding: 1.5rem 2rem 0;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media (max-width: 600px) {
+    .header { padding: 2rem 1.25rem 1.75rem; }
+    .main { padding: 0 1.25rem; }
+    .prereq-grid { grid-template-columns: 1fr; }
+    .header-meta { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">Quantinuum · QA Team · Onboarding</div>
+    <h1>Advanced Systems Engineer<br>Two-Week Study Plan</h1>
+    <p style="opacity:.8; font-size:14px; margin-top:.5rem;">Quantum compiler testing — ramp-up curriculum for engineers with compiler/PL background</p>
+    <div class="header-meta">
+      <span>⏱ 14 days</span>
+      <span>📚 5 core papers</span>
+      <span>🔧 TKET · TKET2 · HUGR · Guppy</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="intro-box">
+    <strong>Who this is for:</strong> You have solid background in programming languages research and compiler verification, but little or no quantum physics. This plan does not try to make you a quantum physicist. It gives you exactly enough quantum knowledge to reason about <em>what a quantum compiler must preserve</em>, then builds up the full Quantinuum compiler stack you'll be testing.
+    <br><br>
+    <strong>How to use it:</strong> Each day has a goal, a reading/hands-on task, and a "key question to answer" before moving on. Click any day to expand it.
+  </div>
+
+  <div class="prereq-grid">
+    <div class="prereq-card have">
+      <h4>✓ What you already know</h4>
+      <ul>
+        <li>Compiler passes &amp; IR transformations</li>
+        <li>Semantic preservation / equivalence</li>
+        <li>Type systems, linearity</li>
+        <li>Property-based &amp; fuzz testing</li>
+        <li>SMT solvers, formal verification ideas</li>
+        <li>Python &amp; Rust basics</li>
+      </ul>
+    </div>
+    <div class="prereq-card need">
+      <h4>✗ What you need to learn</h4>
+      <ul>
+        <li>Qubits, superposition, entanglement</li>
+        <li>Quantum gates &amp; circuit model</li>
+        <li>NISQ hardware constraints</li>
+        <li>What "correct" means for quantum compilation</li>
+        <li>TKET, TKET2, HUGR, Guppy</li>
+        <li>Quantinuum H-series hardware</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- The Quantinuum Stack (orientation box) -->
+  <div class="stack-diagram">
+    <div style="font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:.75rem;">The quantinuum compiler stack (big picture)</div>
+    <div class="stack-layer" style="background:var(--purple-bg);">
+      <span class="stack-label" style="color:var(--purple);">Guppy</span>
+      <span class="stack-desc">Python-embedded DSL — high-level hybrid quantum-classical programs</span>
+    </div>
+    <div class="stack-arrow">↓ compiles to</div>
+    <div class="stack-layer" style="background:var(--accent-bg);">
+      <span class="stack-label" style="color:var(--accent);">HUGR</span>
+      <span class="stack-desc">Hierarchical Unified Graph Representation — the shared IR (like LLVM IR for quantum)</span>
+    </div>
+    <div class="stack-arrow">↓ optimized / lowered by</div>
+    <div class="stack-layer" style="background:var(--teal-bg);">
+      <span class="stack-label" style="color:var(--teal);">TKET2</span>
+      <span class="stack-desc">Rust-based compiler — optimization passes over HUGR</span>
+    </div>
+    <div class="stack-arrow">↓ also usable via legacy</div>
+    <div class="stack-layer" style="background:#f5f5f5;">
+      <span class="stack-label" style="color:var(--text-secondary);">TKET / pytket</span>
+      <span class="stack-desc">Python package — circuit-level passes, device retargeting (mature, widely deployed)</span>
+    </div>
+    <div class="stack-arrow">↓ targets</div>
+    <div class="stack-layer" style="background:var(--amber-bg);">
+      <span class="stack-label" style="color:var(--amber);">H-series</span>
+      <span class="stack-desc">Quantinuum trapped-ion quantum hardware (H1, H2, Helios)</span>
+    </div>
+  </div>
+
+  <!-- ===== WEEK 1 ===== -->
+  <div class="week-header">
+    <span class="week-label">Week 1</span>
+    <span class="week-title">Foundations — compilers meet quantum</span>
+  </div>
+
+  <!-- Day 1 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 1</span>
+      <span class="day-title">Compiler review through a quantum lens</span>
+      <span class="day-tag tag-review">Review</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Re-anchor your compiler knowledge to the vocabulary you'll use here. Identify where quantum compilation is similar to classical, and where it fundamentally differs.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Key differences from classical compilation</div>
+        <ul>
+          <li><strong>No-cloning:</strong> You cannot copy a qubit. Types must be <em>linear</em> — consumed exactly once. This is a hard constraint the compiler must never violate.</li>
+          <li><strong>No arbitrary reads:</strong> You can't observe a qubit mid-computation without destroying its state. Measurement is destructive and probabilistic.</li>
+          <li><strong>Reversibility:</strong> Most quantum gates are reversible (unitary). Non-reversible operations (measurement, reset) are special cases.</li>
+          <li><strong>Correctness = unitary equivalence:</strong> A compilation pass is correct if it produces a circuit implementing the same unitary matrix (up to global phase). This is the analogue of semantic preservation.</li>
+          <li><strong>Exponential state space:</strong> An n-qubit system has 2ⁿ basis states. You cannot enumerate them all. Verification must use structural/algebraic reasoning, not exhaustive testing.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Tasks</div>
+        <ul>
+          <li>Read the "Correctness" section of the TKET paper abstract (Paper 1 below) to ground the above in practice.</li>
+          <li>Write a one-paragraph answer: <em>What is "semantic preservation" in a quantum compiler?</em></li>
+        </ul>
+      </div>
+      <div class="callout callout-key">
+        Key question to answer before Day 2: If a compiler pass changes the order of two gates, how would you check whether the result is still correct?
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 2 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 2</span>
+      <span class="day-title">Quantum computing — the minimum you need</span>
+      <span class="day-tag tag-quantum">Quantum basics</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Learn just enough quantum mechanics to understand what the compiler is manipulating, without needing to solve Schrödinger's equation.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Core concepts (in compiler terms)</div>
+        <ul>
+          <li><strong>Qubit:</strong> A value in a 2D complex vector space (|0⟩, |1⟩, or any superposition α|0⟩ + β|1⟩). Think of it as a typed variable with a very constrained set of operations.</li>
+          <li><strong>Gate:</strong> A unitary matrix applied to one or more qubits. Single-qubit gates: X (bit flip), H (Hadamard / "put into superposition"), Z, Rz(θ). Two-qubit gates: CNOT, CZ. These are the "instructions" of the quantum ISA.</li>
+          <li><strong>Circuit:</strong> A sequence of gates applied to a register of qubits — the equivalent of a straight-line program or basic block. Drawn left-to-right, qubits as horizontal wires.</li>
+          <li><strong>Measurement:</strong> Projects a qubit to |0⟩ or |1⟩ probabilistically, returning a classical bit. Destroys superposition. Side-effectful — the compiler must not reorder measurements carelessly.</li>
+          <li><strong>Entanglement:</strong> A two-qubit state that can't be written as a product of individual qubit states. CNOT creates entanglement. Affects which optimizations are valid.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Resources</div>
+        <ul>
+          <li><a class="resource-link" href="https://quantum.country/qcvc" target="_blank">→ Quantum Computing for Computer Scientists (quantum.country)</a> — read "Quantum gates" and "Quantum circuits" sections only (~1.5 hrs)</li>
+          <li>Or: IBM Quantum Learning, "Basics of Quantum Information" unit 1 (free)</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Hands-on</div>
+        <ul>
+          <li>Install pytket: <code>pip install pytket</code></li>
+          <li>Build a simple Bell-state circuit (2 qubits, H + CNOT) and print it.</li>
+          <li>This is the "hello world" of quantum circuits and will come up constantly.</li>
+        </ul>
+      </div>
+      <div class="callout callout-tip">
+        You do not need to understand Dirac bra-ket notation deeply. Think of |ψ⟩ as "some quantum state" and unitary U as "some transformation" — the compiler manipulates programs, not physics.
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 3 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 3</span>
+      <span class="day-title">The quantum circuit model &amp; what compilation does</span>
+      <span class="day-tag tag-quantum">Quantum basics</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Understand the specific problems a quantum compiler solves — these map directly to the passes you'll be testing.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Compilation problems in quantum</div>
+        <ul>
+          <li><strong>Gate synthesis:</strong> Express a desired unitary using gates from a finite target gateset (e.g., hardware only supports {Rz, SX, CNOT}).</li>
+          <li><strong>Routing / placement:</strong> Physical qubits have limited connectivity. If CNOT requires qubits 0 and 3 but they're not adjacent, add SWAP gates to move them together.</li>
+          <li><strong>Optimization:</strong> Reduce gate count and circuit depth (fewer gates = less decoherence = more accurate result). Common patterns: cancel adjacent inverse gates (X·X = I), peephole rewrites, commutation rules.</li>
+          <li><strong>Retargeting:</strong> Compile the same logical circuit to different hardware backends. TKET's central value proposition.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">NISQ constraints (important for testing)</div>
+        <ul>
+          <li>NISQ = Noisy Intermediate-Scale Quantum. Today's hardware has ~10–100s of qubits with real noise.</li>
+          <li>Gates have error rates. Longer circuits fail. The compiler must genuinely minimize gate count — correctness is necessary but not sufficient.</li>
+          <li>This means your tests must check both semantic correctness <em>and</em> that passes actually reduce resource usage.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Hands-on</div>
+        <ul>
+          <li>Using pytket: apply a compilation pass (<code>DecomposeBoxes</code>, <code>FullPeepholeOptimise</code>) to a circuit and compare gate counts before and after.</li>
+          <li>Read pytket docs: <a class="resource-link" href="https://docs.quantinuum.com/tket/api-docs/passes.html" target="_blank">→ Compilation passes reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 4 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 4</span>
+      <span class="day-title">TKET (pytket) — the production compiler</span>
+      <span class="day-tag tag-tools">Tools</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Develop working familiarity with pytket — the mature, Python-facing compiler you'll interact with daily. Understand its architecture well enough to write meaningful tests.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">TKET architecture (5-minute mental model)</div>
+        <ul>
+          <li>Circuits are DAGs: nodes = gates, edges = qubit/bit wires.</li>
+          <li>Passes are transformations: <code>Circuit → Circuit</code>. They can be composed into <code>SequencePass</code> or <code>RepeatPass</code>.</li>
+          <li>A <code>BackendInfo</code> object describes hardware constraints (gate set, qubit topology, fidelities).</li>
+          <li>A <code>Device</code> (or backend) takes a compiled circuit and runs it — on H-series hardware or a simulator.</li>
+          <li>Predicates are invariants: passes have preconditions and postconditions. This maps directly to your PL testing background.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Key passes to know</div>
+        <ul>
+          <li><code>DecomposeBoxes</code> — expand abstract gate boxes to primitives</li>
+          <li><code>FullPeepholeOptimise</code> — local gate cancellation and rewrite rules</li>
+          <li><code>CXMappingPass</code> — route for qubit connectivity</li>
+          <li><code>KAKDecomposition</code> — optimal 2-qubit gate synthesis</li>
+          <li><code>RebaseIBM</code>, <code>RebaseQuil</code>, etc. — retarget to specific gatesets</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Tasks</div>
+        <ul>
+          <li>Read the pytket user manual: Circuits, Passes, and Predicates sections.</li>
+          <li><a class="resource-link" href="https://docs.quantinuum.com/tket/user-guide/" target="_blank">→ pytket user guide</a></li>
+          <li>Write a test that applies <code>FullPeepholeOptimise</code> and asserts: (1) gate count decreased, and (2) the circuit is still valid per its predicates.</li>
+        </ul>
+      </div>
+      <div class="callout callout-warn">
+        Note: pytket (Python, C++ core) is the <em>current production</em> tool. TKET2 (Rust) is the next-generation rewrite. You'll be working with both.
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 5 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 5</span>
+      <span class="day-title">HUGR — the shared intermediate representation</span>
+      <span class="day-tag tag-tools">Tools</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Understand HUGR — the central IR in the new Quantinuum stack. This is what TKET2 and Guppy both operate on. It will be the primary artifact you validate.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">HUGR in five points</div>
+        <ul>
+          <li><strong>It's a directed hierarchical graph.</strong> Nodes are operations; edges are typed values (qubits, classical data). Think: like MLIR but designed specifically for quantum-classical programs.</li>
+          <li><strong>Linear types enforced structurally.</strong> Qubit edges can't fork (no cloning). The graph structure itself makes illegal programs unrepresentable — a property you can assert in tests.</li>
+          <li><strong>Extensible via "ops".</strong> New operation types can be added (like MLIR dialects), supporting lowering through multiple abstraction levels.</li>
+          <li><strong>Machine-friendly.</strong> Pattern matching over the graph enables rewrite rules. Most optimization passes are implemented as graph rewrites.</li>
+          <li><strong>Shared across tools.</strong> Guppy compiles to HUGR. TKET2 optimizes HUGR. H-series backend consumes (lowered) HUGR. One IR to rule them all.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Resources</div>
+        <ul>
+          <li>Read Paper 2 (HUGR paper) — particularly the Introduction and Section 2 (design goals). Skip the formal type theory on first pass.</li>
+          <li><a class="resource-link" href="https://github.com/CQCL/hugr" target="_blank">→ HUGR GitHub repo &amp; spec</a></li>
+          <li><a class="resource-link" href="https://docs.rs/hugr" target="_blank">→ hugr Rust crate docs</a></li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Testing angle</div>
+        <p>HUGR has a validation step. A well-formed HUGR must pass structural validation. Your tests should always assert: <em>after any pass, the resulting HUGR is valid</em>. This is the quantum equivalent of checking a CFG is well-formed after a transformation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WEEK 2 ===== -->
+  <div class="week-header">
+    <span class="week-label">Week 2</span>
+    <span class="week-title">The full stack — TKET2, Guppy, hardware, and testing</span>
+  </div>
+
+  <!-- Day 6 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 6</span>
+      <span class="day-title">TKET2 — the next-generation Rust compiler</span>
+      <span class="day-tag tag-tools">Tools</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Understand how TKET2 differs from TKET, and how to work with it in both Rust and Python.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">TKET2 vs TKET — key differences</div>
+        <ul>
+          <li><strong>IR:</strong> TKET uses a DAG circuit representation. TKET2 uses HUGR — much more expressive, handles control flow beyond linear circuits.</li>
+          <li><strong>Language:</strong> TKET core is C++. TKET2 is Rust, with Python bindings. Expect better memory safety, better test tooling.</li>
+          <li><strong>Passes:</strong> In TKET2, passes are <code>Hugr → Hugr</code> functions, often implemented as rewrite rules via the <code>hugr-passes</code> crate. Composable, testable.</li>
+          <li><strong>Status:</strong> TKET2 is under active development (work-in-progress as of 2025). pytket remains the production-stable tool.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Hands-on</div>
+        <ul>
+          <li>Clone the TKET2 repo: <code>git clone https://github.com/CQCL/tket2</code></li>
+          <li>Build and run the Rust tests: <code>cargo test</code>. Note what's being tested and how.</li>
+          <li>Read the Python README to understand the Python bindings (<code>tket2-py</code>).</li>
+          <li>Look at <code>hugr-passes</code> crate: how are rewrite rules defined? How are they tested?</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Resources</div>
+        <ul>
+          <li><a class="resource-link" href="https://github.com/CQCL/tket2" target="_blank">→ TKET2 GitHub</a></li>
+          <li><a class="resource-link" href="https://docs.rs/tket2" target="_blank">→ TKET2 Rust docs</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 7 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 7</span>
+      <span class="day-title">Guppy — the high-level language</span>
+      <span class="day-tag tag-tools">Tools</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Understand what Guppy is, how it compiles to HUGR, and what new testing challenges it introduces.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">What Guppy is</div>
+        <ul>
+          <li>A Python-embedded DSL for writing <em>hybrid quantum-classical programs</em> — not just circuits.</li>
+          <li>Supports real control flow: loops, recursion, if/else branching on qubit measurements. This is a significant leap beyond what pytket circuits can express.</li>
+          <li>Statically typed. Guppy code is <em>parsed and compiled</em> — not traced like most Python quantum libraries. The compiler can catch type errors at compile time.</li>
+          <li>Linear types: qubits must be used exactly once. The type checker enforces this.</li>
+          <li>Compiles to HUGR, which is then optimized by TKET2 passes.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Quick example</div>
+        <pre style="background:#f1f0ec; padding:.75rem; border-radius:6px; font-size:13px; overflow-x:auto; margin-top:.5rem;"><code>from guppylang import guppy
+from guppylang.std.qsystem import qubit, measure, h, cx
+
+@guppy
+def bell_state() -> bool:
+    q1, q2 = qubit(), qubit()
+    h(q1)
+    cx(q1, q2)
+    return measure(q1) == measure(q2)  # always True</code></pre>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Testing Guppy programs</div>
+        <ul>
+          <li>Guppy adds a <em>compiler frontend</em> to test, not just passes. Type errors, linearity violations, and control-flow bugs can all appear here.</li>
+          <li>You can run Guppy programs on the emulator: <code>guppy.emulator()</code>.</li>
+          <li>Read the migration guide to understand the pytket → Guppy differences: <a class="resource-link" href="https://docs.quantinuum.com/guppy/migration_guide.html" target="_blank">→ Guppy migration guide</a></li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Hands-on</div>
+        <ul>
+          <li><code>pip install guppylang</code></li>
+          <li>Work through the Guppy tutorial: <a class="resource-link" href="https://docs.quantinuum.com/guppy/" target="_blank">→ Guppy docs</a></li>
+          <li>Write a Guppy program that uses a loop, then inspect the compiled HUGR.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 8 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 8</span>
+      <span class="day-title">Quantinuum hardware — what you're compiling for</span>
+      <span class="day-tag tag-quantum">Hardware</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Understand the target hardware well enough to know what compilation constraints are real, and what constitutes a hardware-violating bug.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">H-series trapped-ion systems</div>
+        <ul>
+          <li><strong>Technology:</strong> Qubits are Ytterbium ions trapped by electromagnetic fields. Much higher fidelity than superconducting qubits (IBM, Google). All-to-all connectivity — no routing problem like superconductors.</li>
+          <li><strong>Native gateset:</strong> Single-qubit rotations (Rz, Ry, ...) and the native two-qubit gate (a ZZ interaction, sometimes called MS gate). The compiler must target this gateset.</li>
+          <li><strong>Key constraint:</strong> The number of two-qubit gates dominates error budget. Your tests should verify that optimization passes genuinely reduce 2Q gate count.</li>
+          <li><strong>Helios:</strong> The newest, most powerful system. The near-term target for Guppy programs.</li>
+          <li><strong>QIR &amp; qsystem:</strong> Programs are eventually compiled to low-level instructions the hardware control stack accepts.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Why this matters for testing</div>
+        <ul>
+          <li>A compilation bug that wastes 2Q gates has real-world consequences (program fails on hardware).</li>
+          <li>Some passes are only valid for specific hardware models. Tests must be parametrized by target backend.</li>
+          <li>The emulator (<code>pytket-quantinuum</code>) lets you test without hardware access. Know its limitations.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Resources</div>
+        <ul>
+          <li><a class="resource-link" href="https://docs.quantinuum.com/systems/" target="_blank">→ Quantinuum systems documentation</a></li>
+          <li>Read the H2 product data sheet (available on the docs site)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 9 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 9</span>
+      <span class="day-title">Testing quantum compilers — methods &amp; strategy</span>
+      <span class="day-tag tag-testing">Testing</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Map your existing testing skills to the quantum compiler domain. Identify which methods transfer directly, which need adaptation, and which are new.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">What transfers from classical compiler testing</div>
+        <ul>
+          <li><strong>Differential testing:</strong> Run the same circuit through multiple compilation paths and compare outputs (statistically, since quantum is probabilistic). This is your most powerful tool.</li>
+          <li><strong>Property-based testing:</strong> Generate random circuits, apply a pass, assert invariants — gate count decreased, HUGR is valid, qubit count unchanged, pass predicates are satisfied.</li>
+          <li><strong>Regression testing:</strong> Keep a corpus of circuits that previously triggered bugs. Standard practice.</li>
+          <li><strong>Equivalence checking:</strong> For small circuits (≤ ~15 qubits), you can compute the full unitary matrix and compare. Use: <code>circuit.get_unitary()</code> in pytket or the <code>quimb</code> library.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">What's new / harder in quantum</div>
+        <ul>
+          <li><strong>Probabilistic outputs:</strong> You can't assert exact output equality. Use statistical tests (chi-squared, KL divergence) or unitary equivalence instead.</li>
+          <li><strong>Exponential simulation cost:</strong> Unitary comparison scales as O(4ⁿ). Limit to small circuits in automated tests; use statistical sampling for larger ones.</li>
+          <li><strong>No intermediate observability:</strong> You can't inspect qubit state mid-circuit without disturbing it. Tests must be designed around inputs and final measurements.</li>
+          <li><strong>Coverage is hard to define:</strong> Line coverage doesn't apply. Think about: pass coverage (did every rewrite rule fire?), circuit pattern coverage (diverse topologies and gatesets).</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Practical test structure</div>
+        <ol>
+          <li>Generate or load a test circuit.</li>
+          <li>Apply a compilation pass or sequence.</li>
+          <li>Assert: (a) HUGR/circuit structural validity, (b) predicates satisfied, (c) resource metrics improved, (d) for small circuits, unitary equivalence.</li>
+          <li>For regressions: assert known-good output matches.</li>
+        </ol>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Tools</div>
+        <ul>
+          <li><code>pytest</code> + <code>hypothesis</code> (property-based testing in Python)</li>
+          <li><code>proptest</code> (property-based testing in Rust, for TKET2)</li>
+          <li><code>pytket</code>: <code>circuit.get_unitary()</code>, <code>circuit.is_valid()</code></li>
+          <li>Circuit equivalence via statevector simulation: <code>qiskit.quantum_info.Statevector</code> or pytket's built-in</li>
+        </ul>
+      </div>
+      <div class="callout callout-key">
+        Read Paper 4 (CertiQ) and Paper 5 (QuCheck) today. They directly address the challenges above and show concrete approaches you can adapt.
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 10 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 10</span>
+      <span class="day-title">Circuit equivalence &amp; formal verification approaches</span>
+      <span class="day-tag tag-testing">Testing</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Understand the formal verification landscape for quantum compilers, and know when to apply each tool.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Verification methods by cost</div>
+        <ul>
+          <li><strong>Unitary matrix comparison (cheap, small circuits):</strong> Compute both circuits' 2ⁿ×2ⁿ unitary and compare elementwise. Exact. Works up to ~15 qubits before memory explodes.</li>
+          <li><strong>Statevector simulation:</strong> Simulate the circuit on a fixed input state and compare output distributions. Faster but only tests specific inputs. Good for regression tests.</li>
+          <li><strong>ZX-calculus:</strong> A graphical rewriting system for quantum circuits. Can verify equivalence without computing unitaries by applying algebraic rewrite rules. Tools: PyZX. Used internally for optimality proofs.</li>
+          <li><strong>SMT solvers:</strong> Encode circuit equivalence as a decidability problem. Works for Clifford circuits (polynomial), hard for general circuits. See Paper 4.</li>
+          <li><strong>Hardware runs:</strong> Statistical comparison of measurement distributions. Gold standard but expensive. Use for final validation only.</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Clifford circuits — a special case</div>
+        <p>Clifford circuits (gates: H, S, CNOT only) are classically simulable in polynomial time. They're a critical testbed because you can verify them exactly and efficiently. Use them heavily in unit tests for passes.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Hands-on</div>
+        <ul>
+          <li>Write a test: generate a random Clifford circuit, apply <code>FullPeepholeOptimise</code>, verify unitary equivalence. Use pytket's <code>circuit.get_unitary()</code>.</li>
+          <li>Install PyZX: <code>pip install pyzx</code>. Convert a pytket circuit to ZX and visualize it.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 11 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 11</span>
+      <span class="day-title">Building a test suite — hands-on project</span>
+      <span class="day-tag tag-testing">Testing</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Build a small but real test suite from scratch. By end of day you should have runnable tests covering the core properties of at least one pytket pass and one HUGR pass.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Suggested test structure</div>
+        <ol>
+          <li><strong>Structural tests:</strong> After every pass, assert <code>circuit.is_valid()</code> (pytket) or HUGR validation passes.</li>
+          <li><strong>Predicate tests:</strong> Assert that post-conditions of a pass are satisfied (e.g., after <code>RebaseIBM</code>, all gates are in IBM gateset).</li>
+          <li><strong>Equivalence tests (Clifford circuits):</strong> Property-based, with Hypothesis: generate random Clifford circuits, apply pass, assert unitary unchanged.</li>
+          <li><strong>Metric tests:</strong> Assert that optimization passes actually reduce gate count on a set of benchmark circuits.</li>
+          <li><strong>Regression tests:</strong> Take any bug-report circuits you can find in the TKET2 issue tracker and add them.</li>
+        </ol>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Circuit generation</div>
+        <ul>
+          <li><code>pytket.utils.gen_term_sequence_circuit</code> for parameterized circuits</li>
+          <li><code>hypothesis</code> strategies: write a custom strategy that produces random circuits with hypothesis decorators</li>
+          <li>Look at the existing TKET2 <code>proptest</code> strategies for inspiration</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 12 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 12</span>
+      <span class="day-title">Papers day — deep reading</span>
+      <span class="day-tag tag-papers">Reading</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Read Papers 3 and 5 in full. Take notes on techniques you want to apply to the TKET/Guppy test suite.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Reading focus</div>
+        <ul>
+          <li><strong>Paper 3 (Guppy):</strong> Focus on Section 3 (language semantics) and Section 4 (comparison with other approaches). Why does static compilation matter for testing? What does linearity checking guarantee?</li>
+          <li><strong>Paper 5 (QuCheck):</strong> Focus on Section 3 (property-based testing methodology) and the case studies. What properties did they test? Which ones would transfer to TKET?</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Output</div>
+        <p>Write a short (1-page) note: "Five properties I plan to add to the TKET2/Guppy test suite." Share this with your team lead as your first deliverable.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 13 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 13</span>
+      <span class="day-title">End-to-end: Guppy → HUGR → hardware</span>
+      <span class="day-tag tag-tools">Tools</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Run a full compilation pipeline from Guppy source to emulated execution. Identify every layer where a bug could hide.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Pipeline walkthrough</div>
+        <ol>
+          <li>Write a Guppy program (simple: teleportation circuit or GHZ state).</li>
+          <li>Compile it: <code>main.compile()</code> → produces a HUGR.</li>
+          <li>Inspect the HUGR: validate it, count gates, check types.</li>
+          <li>(Optional) Apply TKET2 passes to the HUGR.</li>
+          <li>Run on emulator: <code>guppy.emulator()</code>.</li>
+          <li>Check: is the output distribution what you expect?</li>
+        </ol>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Bug surface map</div>
+        <ul>
+          <li><strong>Guppy frontend:</strong> Type checker misses a linearity violation; incorrect HUGR generated from valid source.</li>
+          <li><strong>HUGR passes:</strong> Rewrite rule fires incorrectly; HUGR becomes structurally invalid; unitary not preserved.</li>
+          <li><strong>Backend lowering:</strong> HUGR → hardware instructions introduces errors; gateset conversion incorrect.</li>
+          <li><strong>Emulator:</strong> Emulator bug (less your concern, but important to distinguish from compiler bugs).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 14 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggle(this)">
+      <span class="day-num">Day 14</span>
+      <span class="day-title">Review, gaps, and integration into the team</span>
+      <span class="day-tag tag-testing">Wrap-up</span>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-body">
+      <div class="day-section">
+        <div class="day-section-label">Goal</div>
+        <p>Consolidate what you've learned, identify remaining gaps, and set up for productive work in Week 3 and beyond.</p>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Self-assessment checklist</div>
+        <ul>
+          <li>☐ Can explain what makes a quantum compilation pass correct</li>
+          <li>☐ Can build a pytket circuit and apply compilation passes</li>
+          <li>☐ Can write a Guppy program and compile it to HUGR</li>
+          <li>☐ Can inspect and validate a HUGR</li>
+          <li>☐ Can write property-based tests for a pytket pass using Hypothesis</li>
+          <li>☐ Can verify unitary equivalence for small circuits</li>
+          <li>☐ Have read all 5 papers and can summarize each in 2 sentences</li>
+        </ul>
+      </div>
+      <div class="day-section">
+        <div class="day-section-label">Next steps (Week 3+)</div>
+        <ul>
+          <li>Join TKET2 GitHub and read open issues — pick a bug to reproduce as a test</li>
+          <li>Set up CI integration for the test suite you've started</li>
+          <li>Read the ZX-calculus paper if you want deeper circuit equivalence tools</li>
+          <li>Shadow a hardware calibration run if possible — context for why gate counts matter</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAPERS ===== -->
+  <div class="papers-section">
+    <h3>📄 Required reading — five papers</h3>
+
+    <div class="paper-item">
+      <div class="paper-num">1</div>
+      <div class="paper-content">
+        <div class="paper-title">t|ket⟩: a Retargetable Compiler for NISQ Devices <span class="paper-badge badge-core">Core</span></div>
+        <div class="paper-meta">Sivarajah et al. · Quantum Science and Technology, 2020 · arXiv:2003.10611</div>
+        <div class="paper-why">The foundational TKET paper. Explains the design philosophy, pass architecture, and benchmarks. Read this first — it frames everything else. Focus on sections 2–4.</div>
+      </div>
+    </div>
+
+    <div class="paper-item">
+      <div class="paper-num">2</div>
+      <div class="paper-content">
+        <div class="paper-title">HUGR: A Quantum-Classical Intermediate Representation <span class="paper-badge badge-core">Core</span></div>
+        <div class="paper-meta">Koch, Borgna, Sivarajah et al. · Quantinuum, PLanQC 2025 · arXiv:2510.11420</div>
+        <div class="paper-why">The design spec for the IR you'll be testing against. Understand the type system, graph structure, and safety guarantees. This is the closest thing to an internal spec doc.</div>
+      </div>
+    </div>
+
+    <div class="paper-item">
+      <div class="paper-num">3</div>
+      <div class="paper-content">
+        <div class="paper-title">GUPPY: Pythonic Quantum-Classical Programming <span class="paper-badge badge-core">Core</span></div>
+        <div class="paper-meta">Koch, Lawrence, Singhal, Sivarajah, Duncan · Quantinuum, PLanQC 2025 · arXiv:2510.12582</div>
+        <div class="paper-why">Explains Guppy's design — static typing, linearity, control flow, and compilation to HUGR. Directly relevant to testing the Guppy frontend. Written by your teammates.</div>
+      </div>
+    </div>
+
+    <div class="paper-item">
+      <div class="paper-num">4</div>
+      <div class="paper-content">
+        <div class="paper-title">CertiQ: Mostly-automated Verification of a Realistic Quantum Compiler <span class="paper-badge badge-methods">Methods</span></div>
+        <div class="paper-meta">Shi et al. · arXiv:1908.08963</div>
+        <div class="paper-why">Shows how SMT solvers can verify quantum compiler passes for Qiskit. The approach is directly transferable. Pay close attention to how they encode unitary equivalence as an SMT problem and the limitations they hit.</div>
+      </div>
+    </div>
+
+    <div class="paper-item">
+      <div class="paper-num">5</div>
+      <div class="paper-content">
+        <div class="paper-title">QuCheck: A Property-based Testing Framework for Quantum Programs <span class="paper-badge badge-methods">Methods</span></div>
+        <div class="paper-meta">arXiv:2503.22641 · 2025</div>
+        <div class="paper-why">The most directly actionable paper for your day-to-day work. Shows how to write property-based tests for quantum programs — what properties to specify, how to generate inputs, how to handle probabilistic outputs.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Quantinuum QA Team · Onboarding 2025</span>
+  <span>Confidential — internal use only</span>
+</footer>
+
+<script>
+function toggle(header) {
+  const card = header.parentElement;
+  card.classList.toggle('open');
+}
+</script>
+</body>
+</html>
