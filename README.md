@@ -46,22 +46,3 @@ The CI workflow (M1-3) is itself part of the learning: a compiler test engineer'
 | 12 | Papers day — deep reading | finish M5-3, M5-5; M5-6 |
 | 13 | End-to-end: Guppy → HUGR → hardware | M6-2 |
 | 14 | Review, gaps, integration | M6-3 |
-
----
-
-## Labels
-
-- `milestone-1-setup` (0075ca) — Milestone 1: Setup and orientation.
-- `milestone-2-quantum` (0075ca) — Milestone 2: Quantum computing foundations.
-- `milestone-3-stack` (0075ca) — Milestone 3: The Quantinuum compiler stack.
-- `milestone-4-testing` (5319e7) — Milestone 4: Quantum compiler testing methods.
-- `milestone-5-papers` (5319e7) — Milestone 5: Papers — required reading.
-- `milestone-6-capstone` (5319e7) — Milestone 6: Capstone — test suite and end-to-end pipeline.
-- `review` (854f0b) — Classical compiler knowledge re-anchored to the quantum setting.
-- `quantum-basics` (0f6e56) — Core quantum computing concepts.
-- `tools` (1a4b8c) — TKET, TKET2, HUGR, Guppy, H-series hardware.
-- `testing` (3c3489) — Testing methods and test development.
-- `paper-reading` (a32d2d) — One of the five required papers.
-- `hands-on` (0e8a16) — Produces runnable code committed to this repository.
-- `writeup` (c5def5) — Produces a note under notes/.
-- `ci` (ededed) — GitHub Actions and automation.
