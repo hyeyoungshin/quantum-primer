@@ -223,8 +223,13 @@ def _parse_issues(text: str) -> list[Issue]:
         if ms_leak:
             raw_body = raw_body[:ms_leak.start()].strip()
 
-        # Remove trailing --- separators
-        raw_body = re.sub(r"\n---+\s*$", "", raw_body).strip()
+        # Remove trailing --- separators and render-region markers; the
+        # BEGIN/END GENERATED comments delimit regions for
+        # gh_project_render.py and are file structure, not issue content.
+        raw_body = re.sub(
+            r"(?:\s*(?:---+|<!--\s*(?:BEGIN|END) GENERATED:[^>]*-->))+\s*$",
+            "", raw_body,
+        ).strip()
 
         # Extract labels from the **Labels:** line
         labels_match = re.search(r"\*\*Labels:\*\*\s*(.+)", raw_body)
@@ -250,9 +255,11 @@ def _parse_issues(text: str) -> list[Issue]:
         # Clean up leading blank lines
         body = re.sub(r"^\n+", "", body)
 
+        # The Issue contract (and render's ordering, and this script's own
+        # idempotency guard) require the `[MN-k]` prefix on GitHub titles.
         issues.append(Issue(
             id=issue_id,
-            title=title,
+            title=f"[{issue_id}] {title}",
             body=body,
             labels=labels,
             milestone_idx=ms_idx,
